@@ -2,12 +2,12 @@
 	include_once('components/config.php');
 	$Success=0;
 	$User_Exists=0;
-	/*
-	if(!($_SESSION['role'] == 'admin'))
+	
+    if(!($_SESSION['role'] == 'admin'))
 	  {
 		 header('Location: logout.php');
 	  }
-	*/
+      
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		
 		

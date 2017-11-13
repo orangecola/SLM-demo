@@ -9,7 +9,7 @@
         public $userFields = ['User_Username', 'User_Password', 'User_Role', 'User_Status'];
         public function check($username) {
             //Checks if the username that has been taken. True if not taken, false if taken.
-            $stmt = $this->db->prepare("SELECT * FROM User WHERE User_Username=:username");
+            $stmt = $this->db->prepare("SELECT * FROM Users WHERE User_Username=:username");
             $stmt->bindParam(':username', $username);
             $stmt->execute();
             $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -47,7 +47,7 @@
             {
                 $new_password = password_hash($password, PASSWORD_DEFAULT);
                 
-                $stmt = $this->db->prepare("INSERT INTO User(User_Username,User_Password,User_Role,User_Status) 
+                $stmt = $this->db->prepare("INSERT INTO Users(User_Username,User_Password,User_Role,User_Status) 
                 VALUES(:username, :password, :role, 'active')");
                 
                 $stmt->bindparam(":username", $username);
@@ -70,7 +70,7 @@
         {
             try
             {
-                $stmt = $this->db->prepare("SELECT * FROM User WHERE User_Username = :username AND User_Status='active' LIMIT 1");
+                $stmt = $this->db->prepare("SELECT * FROM Users WHERE User_Username = :username AND User_Status='active' LIMIT 1");
                 $stmt->bindparam(":username", $username);
                 $stmt->execute();
                 $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
@@ -102,7 +102,7 @@
             //Returns true / false
             try
             {
-                $stmt = $this->db->prepare("SELECT * FROM User WHERE User_Username = :username AND User_Status='active' LIMIT 1");
+                $stmt = $this->db->prepare("SELECT * FROM Users WHERE User_Username = :username AND User_Status='active' LIMIT 1");
                 $stmt->bindparam(":username", $_SESSION['username']);
                 $stmt->execute();
                 $userRow=$stmt->fetch(PDO::FETCH_ASSOC);
@@ -125,7 +125,7 @@
             //Changes the password of the current user logged in.
             //Check for the same password must be finished prior to this (This has no checks!)
             $new_password = password_hash($newpassword, PASSWORD_DEFAULT);
-            $stmt = $this->db->prepare("UPDATE User SET User_Password=:password where User_Username=:username AND User_Status='active'");
+            $stmt = $this->db->prepare("UPDATE Users SET User_Password=:password where User_Username=:username AND User_Status='active'");
             $stmt->bindParam(':username', $_SESSION['username']);
             $stmt->bindParam(':password', $new_password);
             $stmt->execute();
@@ -143,7 +143,7 @@
         public function getUsers() {
             //Retrieves the user list
             //Returns an array of users
-            $stmt = $this->db->prepare("SELECT User_Username, User_Role, User_Status, user_ID FROM User");
+            $stmt = $this->db->prepare("SELECT User_Username, User_Role, User_Status, user_ID FROM Users");
             $stmt->execute();
             return $stmt->fetchAll();
         }
@@ -183,7 +183,7 @@
             //[0]: Result of retrieving. True if successful, False if failed
             //[1]: Array of user information
             $result = array(false, false);
-            $stmt = $this->db->prepare("SELECT * from User where user_ID=:user_ID");
+            $stmt = $this->db->prepare("SELECT * from Users where user_ID=:user_ID");
             $stmt->bindParam(':user_ID', $user_ID);
             $stmt->execute();
             if ($stmt->rowCount() == 1) {

@@ -23,22 +23,16 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <div class="row">
-                    <?php if (count($modules) == 0): ?>
-                        <div class="col-xs-12">
-                            <p>No Modules yet, Add one today!</p>
-                        </div>
-                    
-                    <?php else : 
-                          foreach ($modules as $module) {?>
-                      <a href="adminquestionlist.php?id=<?php echo htmlentities($module['module_id'])?>">
+                    <div class="row">                    
+                    <?php foreach ($modules as $module) {?>
+                      <a href="questionlist.php?id=<?php echo htmlentities($module['module_id'])?>">
                         <div class="col-md-55">
                           <div class="caption">
                             <p><?php echo htmlentities($module['module_name'])?></p>
                           </div>
                         </div>
                       </a>
-                          <?php } endif; ?>
+                          <?php } ?>
                     </div>
                   </div>
                 </div>

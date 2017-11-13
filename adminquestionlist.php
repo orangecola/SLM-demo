@@ -17,6 +17,7 @@
         $questionname = $_POST['questionname'];
         if ($questionname != "") {
             $user->addQuestion($questionname, $module[0]['module_id']);
+            $module = $user->getModule($_GET['id']);
         }
     }
     require 'components/sidebar.php';

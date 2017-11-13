@@ -23,7 +23,7 @@
 	include_once('components/config.php');
 	//Redirect user to dashboard if logged in
 	if (isset($_SESSION['user_ID'])) {
-		header('Location: changepublickey.php');
+		header('Location: modulelist.php');
 	}
 	$Login_Failed=0;
 	
@@ -37,7 +37,7 @@
 		$result = $user->login($username, $password);
 		
 		if ($result) {
-			header("Location: changepublickey.php");
+			header("Location: modulelist.php");
 		}
 		else {
 			$Login_Failed = 1;
@@ -53,7 +53,7 @@
         <div class="login_form">
           <section class="login_content">
             <form method="post">
-              <h1>Certificate Authority</h1>
+              <h1>YASD</h1>
               <div>
                 <input type="text" class="form-control" name="username" placeholder="Username"/>
               </div>

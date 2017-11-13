@@ -1,10 +1,10 @@
 <?php 
-	/*
+	
     if(!isset($_SESSION['user_ID']))
 	  {
 		 header('Location: logout.php');
 	  }
-      */
+      
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -77,10 +77,9 @@
 				<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 				  <div class="menu_section">
 					<ul class="nav side-menu">
-					  <li><a><i class="fa fa-home"></i>Attempt Questions</a></li>
+					  <li id="modulelist.php"><a href="modulelist.php"><i class="fa fa-home"></i>Attempt Questions</a></li>
                       <li id="changepassword.php"><a href="changepassword.php"><i class="fa fa-user"></i>Change Password</a></li>
-					</ul>
-                     <?php /*if ($_SESSION['role'] == 'admin') { 
+                      <?php if ($_SESSION['role'] == 'admin') { 
 								echo '<li><a><i class="fa fa-gears"></i> Admin Panel <span class="fa fa-chevron-down"></span></a>';
 								echo '<ul class="nav child_menu">';
                                 echo '<li id="adminmodulelist.php"><a href="adminmodulelist.php">Edit Questions</a></li>' ;
@@ -90,7 +89,8 @@
 								echo '<li id="logs.php"><a href="logs.php">Logs</a></li>';
 								echo '</ul>';
 								echo '</li>';
-							  }*/?>
+                      }?>
+					</ul>   
 				  </div>
 				  
 
@@ -111,7 +111,7 @@
 				  <ul class="nav navbar-nav navbar-right">
 					<li class="">
 					  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-						<?php// echo $_SESSION['username']?>
+						<?php echo $_SESSION['username']?>
 						<span class=" fa fa-angle-down"></span>
 					  </a>
 					  <ul class="dropdown-menu dropdown-usermenu pull-right">
