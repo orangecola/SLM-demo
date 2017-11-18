@@ -14,8 +14,8 @@
     
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['video'])) {
-            if ($_POST['videoid'] != "") {
-                $user->addVideo($_POST['videoid'], $question[0]['question_id']);
+            if ($_POST['videoid'] != "" and $_POST['videoname'] != "") {
+                $user->addVideo($_POST['videoid'], $question[0]['question_id'], $_POST['videoname']);
                 $question = $user->getQuestion($_GET['id']);
             }
         }
@@ -40,6 +40,7 @@
 		echo '<tr>';
 		echo "<td>".htmlentities($video['video_id'])."</td>";
 		echo "<td>".htmlentities($video['video_link'])."</td>";
+		echo "<td>".htmlentities($video['video_text'])."</td>";
 		echo "<td>";
         echo "<a href=\"statistics.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-default btn-xs\"><i class='fa fa-folder'></i> View</a>";
         echo "<a href=\"editvideo.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a>";
@@ -53,14 +54,13 @@
 		echo '</tr>';
     }
     
-    function printOptionRow($option) {
+    function printOptionRow($option, $question) {
 		echo '<tr>';
-		echo "<td>".htmlentities($option['video_from'])."</td>";
-		echo "<td>".htmlentities($option['video_to'])."</td>";
+		echo "<td>".htmlentities($question[1][$option['video_from']-1]['video_text'])."</td>";
+		echo "<td>".htmlentities($question[1][$option['video_to']-1]['video_text'])."</td>";
 		echo "<td>".htmlentities($option['option_name'])."</td>";
 		echo "<td>".htmlentities($option['frequency'])."</td>";
 		echo "<td>";
-        echo "<a href=\"placeholder.php?id=".htmlentities($option['option_id'])."\" class=\"btn btn-default btn-xs\"><i class='fa fa-folder'></i> View</a>";
         echo "<a href=\"placeholder.php?id=".htmlentities($option['option_id'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a>";
         echo "<a href=\"placeholder.php?id=".htmlentities($option['option_id'])."\" class=\"btn btn-danger btn-xs\"><i class='fa fa-delete'></i>Delete</a>";
         echo "</td>";
@@ -68,6 +68,7 @@
     }
 ?>
 <!-- page content -->
+<script type="text/javascript" src="build/js/graph.js"></script>
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
@@ -97,7 +98,29 @@
                                     </ul>
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                                            Diagram Placeholder
+                                            <svg xmlns="http://www.w3.org/2000/svg" id="canvas"></svg>
+                                            <script type="text/javascript">
+                                                var g = new Graph("canvas", 960, 700 );
+                                                
+                                                <?php
+                                                    echo "g.createVertex('Start', '#73789C');";
+                                                    
+                                                    
+                                                    foreach($question[1] as $video) {
+                                                        echo "g.createVertex(".json_encode($video["video_text"]).", '#2A3F54');\n";
+                                                        if ($question[0]['video_start'] == $video['video_id']) {
+                                                             echo "g.createEdge('Start', ".json_encode($video["video_text"]).");\n";
+                                                        }
+                                                    }
+                                                    
+                                                    foreach($question[2] as $option) {
+                                                        echo "g.createVertex(".json_encode($option["option_name"]).", '#D3D6DA');\n";
+                                                        echo "g.createEdge(".json_encode($question[1][$option["video_from"] - 1]['video_text']).", ".json_encode($option["option_name"]).");\n";
+                                                        echo "g.createEdge(".json_encode($option["option_name"]).", ".json_encode($question[1][$option["video_to"] - 1]['video_text']).");\n";
+                                                    }
+                                                ?>                              
+                                                g.go();
+                                            </script>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                                             <table style="width:100%"id="datatable" class="table table-striped table-bordered dt-responsive">
@@ -105,6 +128,7 @@
                                                     <tr>
                                                         <th>Video ID</th>
                                                         <th>Video Link</th>
+                                                        <th>Video Name</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                 </thead>
@@ -137,6 +161,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="item form-group">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Video Name <span class="required">*</span>
+                                                    </label>
+                                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                                        <input type="text"  class="form-control col-md-7 col-xs-12 required"  name="videoname">
+                                                    </div>
+                                                </div>
+                                                <div class="item form-group">
                                                     <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                                         <input type="hidden" name="video" value="type">
                                                         <button type="submit" class="btn btn-success">Submit</button>
@@ -158,7 +189,7 @@
                                                 <tbody>
                                                     <?php 
                                                         foreach($question[2] as $option) {
-                                                            printOptionRow($option);
+                                                            printOptionRow($option, $question);
                                                         }
                                                     ?>
                                                 </tbody>
@@ -176,7 +207,7 @@
                                                             <option value="">Video To</option>
                                                             <?php 
                                                                 foreach($question[1] as $row) {
-                                                                    echo '<option value="'.$row['video_id'].'">'.$row['video_id'].'</option>';
+                                                                    echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
                                                                 }
                                                             ?>
                                                         </select>
@@ -190,7 +221,7 @@
                                                             <option value="">Video To</option>
                                                             <?php 
                                                                 foreach($question[1] as $row) {
-                                                                    echo '<option value="'.$row['video_id'].'">'.$row['video_id'].'</option>';
+                                                                    echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
                                                                 }
                                                             ?>
                                                         </select>
@@ -231,10 +262,12 @@
         
         document.getElementsByName("video")[0].removeAttribute("disabled");
         document.getElementsByName("videoid")[0].removeAttribute("disabled");
+        document.getElementsByName("videoname")[0].removeAttribute("disabled");
     };
     function option() {
         document.getElementsByName("video")[0].setAttribute("disabled", "disabled");
         document.getElementsByName("videoid")[0].setAttribute("disabled", "disabled");
+        document.getElementsByName("videoname")[0].setAttribute("disabled", "disabled");
         
         document.getElementsByName("videoFrom")[0].removeAttribute("disabled");
         document.getElementsByName("videoTo")[0].removeAttribute("disabled");

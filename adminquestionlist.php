@@ -77,12 +77,6 @@
     </div>
 </div>
 <!-- /page content -->
-<script>
-    function video() {
-    }
-    function option() {
-    }
-</script>
 <?php
 	include 'components/footer.php';
 	include 'components/closing.php';

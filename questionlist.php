@@ -35,13 +35,7 @@
                   </div>
                   <div class="x_content">
                     <div class="row">
-                    <?php if (count($module[1]) == 0): ?>
-                        <div class="col-xs-12">
-                            <p>No Questions yet, Add one today!</p>
-                        </div>
-                    
-                    <?php else : 
-                          foreach ($module[1] as $question) {?>
+                    <?php foreach ($module[1] as $question) {?>
                       <a href="question.php?id=<?php echo htmlentities($question['video_start'])?>">
                         <div class="col-md-55">
                           <div class="caption">
@@ -49,19 +43,7 @@
                           </div>
                         </div>
                       </a>
-                          <?php } endif; ?>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12">
-                          <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="post">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="New Question Name" name="questionname">
-                                <span class="input-group-btn">
-                                  <button type="submit" class="btn btn-success"><i class="fa fa-plus-circle"></i> Add new Question</button>
-                                </span>
-                            </div>
-                            </form>
-                        </div>
+                          <?php } ?>
                     </div>
                   </div>
                 </div>

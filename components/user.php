@@ -291,10 +291,11 @@
             $stmt->execute();
         }
         
-        public function addVideo($videoLink, $questionId) {
-            $stmt = $this->db->prepare("INSERT INTO videos(question_id, video_link) VALUES (:question_id, :video_link)");
+        public function addVideo($videoLink, $questionId, $videoName) {
+            $stmt = $this->db->prepare("INSERT INTO videos(question_id, video_link, video_text) VALUES (:question_id, :video_link, :video_name)");
             $stmt->bindParam(':question_id', $questionId);
             $stmt->bindParam(':video_link', $videoLink);
+            $stmt->bindParam(':video_name', $videoName);
             $stmt->execute();
         }
         

@@ -62,11 +62,11 @@
                                     <?php
                                         foreach ($video[1] as $option) {
                                             echo '<a href="question.php?id='.htmlentities($video[0]['video_id']).'&option='.htmlentities($option['option_id']).'" class="btn btn-success col-xs-12">'.htmlentities($option['option_name']).'</a>';
-                                            //echo '<a href="question.php?id='.htmlentities($video[0]['video_id'].'&option='.htmlentities($option['option_id']).'" class="btn btn-success col-xs-12">'.htmlentities($option['option_name']).'</a>';
                                             echo '<br />';
                                             echo '<br />';
                                         }
                                     ?>
+                                    <a href="modulelist.php" class="btn btn-danger col-xs-12">Back to Module List</a>
                                 </div>
                             </div>
                         </div>

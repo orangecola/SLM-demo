@@ -38,9 +38,6 @@ CREATE TABLE `options` (
   CONSTRAINT `options_ibfk_3` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `options` (`option_id`, `video_from`, `video_to`, `option_name`, `frequency`, `question_id`) VALUES
-(1,	1,	2,	'Option 1',	1,	1),
-(2,	1,	3,	'Option 2',	0,	1);
 
 DROP TABLE IF EXISTS `questions`;
 CREATE TABLE `questions` (
@@ -72,10 +69,11 @@ CREATE TABLE `videos` (
   `video_id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) NOT NULL,
   `video_link` text NOT NULL,
+  `video_text` text NOT NULL,
   PRIMARY KEY (`video_id`),
   KEY `question_id` (`question_id`),
   CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
--- 2017-11-05 15:47:21
+-- 2017-11-18 06:07:48
