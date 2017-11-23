@@ -75,5 +75,6 @@ CREATE TABLE `videos` (
   CONSTRAINT `videos_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`question_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-
+INSERT INTO `users` (`User_ID`, `User_Username`, `User_Password`, `User_Role`, `User_Status`) VALUES
+(1,	'admin',	'$2y$10$WZLuAFTCs6jmIVcmm3sBo.gmkiw7NHdoGXltPYO5udebEeEKxnOdu',	'admin',	'active');
 -- 2017-11-18 06:07:48

@@ -20,7 +20,6 @@
         redirect:
         header("Location: modulelist.php");
     }
-    //$key = $user->getKey($_SESSION['username']);
 	include('components/sidebar.php');
 ?>  
 
