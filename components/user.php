@@ -308,6 +308,11 @@
             $stmt->execute();
         }
         
+        public function deleteOption($optionID) {
+            $stmt = $this->db->prepare("DELETE FROM options WHERE option_id=:option");
+            $stmt->bindParam(':option', $optionID);
+            $stmt->execute();
+        }
         public function addOptionFrequency($optionId) {
             $stmt = $this->db->prepare("UPDATE options SET frequency=frequency + 1 WHERE option_id=:option_id");
             $stmt->bindParam(':option_id', $optionId);

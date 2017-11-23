@@ -6,6 +6,7 @@
         if ($video[0] == false) {
             goto redirect;
         }
+        $question = $user->getQuestion($video[0]['question_id']);
         if (isset($_GET['option'])) {
             foreach($video[1] as $option) {
                 if ($option['option_id'] == $_GET['option']) {
@@ -32,7 +33,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3>Topic Title (Question title if nil)</h3>
+                <h3><?php echo htmlentities($question[0]['question_name']);?></h3>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -42,7 +43,7 @@
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
-                        <h2>Video Title</h2>
+                        <h2><?php echo htmlentities($video[0]['video_text'])?></h2>
                         
                         <div class="clearfix"></div>
                     </div>

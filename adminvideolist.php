@@ -34,6 +34,14 @@
             }
         }
     }
+    else if (isset($_GET['deleteoption'])) {
+        foreach($question[2] as $option) {
+            if ($option['option_id'] == $_GET['deleteoption']) {
+                $user->deleteOption($_GET['deleteoption']);
+                $question = $user->getQuestion($_GET['id']);
+            }
+        }
+    }
     require 'components/sidebar.php';
     
     //-----------------------------------------------------------
@@ -80,7 +88,7 @@
 		echo "<td>".htmlentities($option['frequency'])."</td>";
 		echo "<td>";
         echo "<a href=\"placeholder.php?id=".htmlentities($option['option_id'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a>";
-        echo "<a href=\"placeholder.php?id=".htmlentities($option['option_id'])."\" class=\"btn btn-danger btn-xs\"><i class='fa fa-delete'></i>Delete</a>";
+        echo "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deleteoption=".htmlentities($option['option_id'])."\" class=\"btn btn-danger btn-xs\"><i class='fa fa-delete'></i>Delete</a>";
         echo "</td>";
 		echo '</tr>';
     }
