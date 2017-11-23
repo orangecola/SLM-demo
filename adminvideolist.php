@@ -42,7 +42,7 @@
     // returns: $videoName (string)
     //-----------------------------------------------------------
     function getVideoText($videoID, $videoList){
-
+        
         // iterate through videos to find specific video based on id and retrieve video name
         $videoName = "";
         foreach ($videoList as $video){
@@ -50,10 +50,10 @@
                 $videoName = $video["video_text"];
             }
         }
-
+        
         return $videoName;
     }
-                                                                        
+    
     function printVideoRow($video, $question) {
 		echo '<tr>';
 		echo "<td>".htmlentities($video['video_id'])."</td>";
@@ -86,7 +86,7 @@
     }
 ?>
 <!-- page content -->
-<script type="text/javascript" src="build/js/graph.js"></script>
+
 <div class="right_col" role="main">
     <div class="">
         <div class="page-title">
@@ -116,29 +116,19 @@
                                     </ul>
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-                                            <svg xmlns="http://www.w3.org/2000/svg" id="canvas"></svg>
-                                            <script type="text/javascript">
-                                                var g = new Graph("canvas", 960, 700 );
-                                                
-                                                <?php
-                                                    echo "g.createVertex('Start', '#73789C');";
-                                                    
-                                                    
-                                                    foreach($question[1] as $video) {
-                                                        echo "g.createVertex(".json_encode($video["video_text"]).", '#2A3F54');\n";
-                                                        if ($question[0]['video_start'] == $video['video_id']) {
-                                                             echo "g.createEdge('Start', ".json_encode($video["video_text"]).");\n";
+                                            <div style="overflow: scroll;">
+                                                <div class="mermaid" style="width:2000px;">
+                                                    graph TD
+                                                    <?php 
+                                                        foreach($question[1] as $video) {
+                                                            echo htmlentities($video['video_id']) . '[\'' . htmlentities($video['video_text']) . "']\n";   
                                                         }
-                                                    }
-                                                    
-                                                    foreach($question[2] as $option) {
-                                                        echo "g.createVertex(".json_encode($option["option_name"]).", '#D3D6DA');\n";
-                                                        echo "g.createEdge(".json_encode($question[1][$option["video_from"] - 1]['video_text']).", ".json_encode($option["option_name"]).");\n";
-                                                        echo "g.createEdge(".json_encode($option["option_name"]).", ".json_encode(getVideoText($option["video_to"], $question[1])).");\n";
-                                                    }
-                                                ?>                              
-                                                g.go();
-                                            </script>
+                                                        foreach($question[2] as $option) {
+                                                            echo htmlentities($option['video_from']) . '--' . htmlentities($option['option_name']) . '-->' . htmlentities($option['video_to']) . "\n";
+                                                        }
+                                                    ?>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                                             <table style="width:100%"id="datatable" class="table table-striped table-bordered dt-responsive">
@@ -149,116 +139,117 @@
                                                         <th>Video Name</th>
                                                         <th>Actions</th>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php 
-                                                        foreach($question[1] as $video) {
-                                                            printVideoRow($video, $question);
-                                                        }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                            <div class="x_title">
-                                                <h2>Add Video</h2>
-                                                <div class="clearfix"></div>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php 
+                                                            foreach($question[1] as $video) {
+                                                                printVideoRow($video, $question);
+                                                            }
+                                                        ?>
+                                                    </tbody>
+                                                </table>
+                                                <div class="x_title">
+                                                    <h2>Add Video</h2>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <form id="demo-form2" enctype="multipart/form-data" class="form-horizontal form-label-left" method="post">
+                                                    <div class="item form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Instructions
+                                                        </label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            Upload your video to youtube, and then copy and paste the video id, which is after the v (without the v=), below:
+                                                            <img src="images/videoinstruction.jpg"> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="item form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Video ID <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <input type="text"  class="form-control col-md-7 col-xs-12 required"  name="videoid">
+                                                        </div>
+                                                    </div>
+                                                    <div class="item form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Video Name <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <input type="text"  class="form-control col-md-7 col-xs-12 required"  name="videoname">
+                                                        </div>
+                                                    </div>
+                                                    <div class="item form-group">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                                            <input type="hidden" name="video" value="type">
+                                                            <button type="submit" class="btn btn-success">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
-                                            <form id="demo-form2" enctype="multipart/form-data" class="form-horizontal form-label-left" method="post">
-                                                <div class="item form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Instructions
-                                                    </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        Upload your video to youtube, and then copy and paste the video id, which is after the v (without the v=), below:
-                                                        <img src="images/videoinstruction.jpg"> 
-                                                    </div>
+                                            <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                                                <table style="width:100%"  class="table table-striped table-bordered dt-responsive">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Video From</th>
+                                                            <th>Video To</th>
+                                                            <th>Option Name</th>
+                                                            <th>Frequency</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php 
+                                                            foreach($question[2] as $option) {
+                                                                printOptionRow($option, $question);
+                                                            }
+                                                        ?>
+                                                    </tbody>
+                                                </table>
+                                                <div class="x_title">
+                                                    <h2>Add Option</h2>
+                                                    <div class="clearfix"></div>
                                                 </div>
-                                                <div class="item form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Video ID <span class="required">*</span>
-                                                    </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input type="text"  class="form-control col-md-7 col-xs-12 required"  name="videoid">
+                                                <form id="demo-form2" enctype="multipart/form-data" class="form-horizontal form-label-left" method="post">
+                                                    <div class="item form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Video From<span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <select class="form-control required" name="videoFrom" disabled="disabled">
+                                                                <option value="">Video From</option>
+                                                                <?php 
+                                                                    foreach($question[1] as $row) {
+                                                                        echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="item form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Video Name <span class="required">*</span>
-                                                    </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input type="text"  class="form-control col-md-7 col-xs-12 required"  name="videoname">
+                                                    <div class="item form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Video To<span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <select class="form-control required" name="videoTo">
+                                                                <option value="">Video To</option>
+                                                                <?php 
+                                                                    foreach($question[1] as $row) {
+                                                                        echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="item form-group">
-                                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                                        <input type="hidden" name="video" value="type">
-                                                        <button type="submit" class="btn btn-success">Submit</button>
+                                                    <div class="item form-group">
+                                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Option Text <span class="required">*</span>
+                                                        </label>
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <input type="text"  class="form-control col-md-7 col-xs-12 required"  name="optiontext" disabled="disabled">
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-                                            <table style="width:100%"  class="table table-striped table-bordered dt-responsive">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Video From</th>
-                                                        <th>Video To</th>
-                                                        <th>Option Name</th>
-                                                        <th>Frequency</th>
-                                                        <th>Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php 
-                                                        foreach($question[2] as $option) {
-                                                            printOptionRow($option, $question);
-                                                        }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                            <div class="x_title">
-                                                <h2>Add Option</h2>
-                                                <div class="clearfix"></div>
+                                                    <div class="item form-group">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                                            <input type="hidden" name="option" value="type" disabled="disabled">
+                                                            <button type="submit" class="btn btn-success">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
-                                            <form id="demo-form2" enctype="multipart/form-data" class="form-horizontal form-label-left" method="post">
-                                                <div class="item form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Video From<span class="required">*</span>
-                                                    </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <select class="form-control required" name="videoFrom" disabled="disabled">
-                                                            <option value="">Video From</option>
-                                                            <?php 
-                                                                foreach($question[1] as $row) {
-                                                                    echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
-                                                                }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Video To<span class="required">*</span>
-                                                    </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <select class="form-control required" name="videoTo">
-                                                            <option value="">Video To</option>
-                                                            <?php 
-                                                                foreach($question[1] as $row) {
-                                                                    echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
-                                                                }
-                                                            ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="item form-group">
-                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Option Text <span class="required">*</span>
-                                                    </label>
-                                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                                        <input type="text"  class="form-control col-md-7 col-xs-12 required"  name="optiontext" disabled="disabled">
-                                                    </div>
-                                                </div>
-                                                <div class="item form-group">
-                                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                                        <input type="hidden" name="option" value="type" disabled="disabled">
-                                                        <button type="submit" class="btn btn-success">Submit</button>
-                                                    </div>
-                                                </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -269,32 +260,33 @@
             </div>
         </div>
     </div>
-</div>
-<!-- /page content -->
-<script>
-    function video() {
-        document.getElementsByName("videoFrom")[0].setAttribute("disabled", "disabled");
-        document.getElementsByName("videoTo")[0].setAttribute("disabled", "disabled");
-        document.getElementsByName("optiontext")[0].setAttribute("disabled", "disabled");
-        document.getElementsByName("option")[0].setAttribute("disabled", "disabled");
-        
-        document.getElementsByName("video")[0].removeAttribute("disabled");
-        document.getElementsByName("videoid")[0].removeAttribute("disabled");
-        document.getElementsByName("videoname")[0].removeAttribute("disabled");
-    };
-    function option() {
-        document.getElementsByName("video")[0].setAttribute("disabled", "disabled");
-        document.getElementsByName("videoid")[0].setAttribute("disabled", "disabled");
-        document.getElementsByName("videoname")[0].setAttribute("disabled", "disabled");
-        
-        document.getElementsByName("videoFrom")[0].removeAttribute("disabled");
-        document.getElementsByName("videoTo")[0].removeAttribute("disabled");
-        document.getElementsByName("optiontext")[0].removeAttribute("disabled");
-        document.getElementsByName("option")[0].removeAttribute("disabled");
-    };
-</script>    
-<?php
-	include 'components/footer.php';
-    include 'components/datatables.php';
-	include 'components/closing.php';
-?>
+    <!-- /page content -->
+    <script>
+        function video() {
+            document.getElementsByName("videoFrom")[0].setAttribute("disabled", "disabled");
+            document.getElementsByName("videoTo")[0].setAttribute("disabled", "disabled");
+            document.getElementsByName("optiontext")[0].setAttribute("disabled", "disabled");
+            document.getElementsByName("option")[0].setAttribute("disabled", "disabled");
+            
+            document.getElementsByName("video")[0].removeAttribute("disabled");
+            document.getElementsByName("videoid")[0].removeAttribute("disabled");
+            document.getElementsByName("videoname")[0].removeAttribute("disabled");
+        };
+        function option() {
+            document.getElementsByName("video")[0].setAttribute("disabled", "disabled");
+            document.getElementsByName("videoid")[0].setAttribute("disabled", "disabled");
+            document.getElementsByName("videoname")[0].setAttribute("disabled", "disabled");
+            
+            document.getElementsByName("videoFrom")[0].removeAttribute("disabled");
+            document.getElementsByName("videoTo")[0].removeAttribute("disabled");
+            document.getElementsByName("optiontext")[0].removeAttribute("disabled");
+            document.getElementsByName("option")[0].removeAttribute("disabled");
+        };
+    </script>
+    <script type="text/javascript" src="build/js/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <?php
+        include 'components/footer.php';
+        include 'components/datatables.php';
+        include 'components/closing.php';
+    ?>    
