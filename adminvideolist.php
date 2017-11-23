@@ -36,6 +36,24 @@
     }
     require 'components/sidebar.php';
     
+    //-----------------------------------------------------------
+    // desc: retrieve the video name based on the ID
+    // params: $option (object), $videoList (list of objects)
+    // returns: $videoName (string)
+    //-----------------------------------------------------------
+    function getVideoText($videoID, $videoList){
+
+        // iterate through videos to find specific video based on id and retrieve video name
+        $videoName = "";
+        foreach ($videoList as $video){
+            if($video["video_id"] == $videoID){
+                $videoName = $video["video_text"];
+            }
+        }
+
+        return $videoName;
+    }
+                                                                        
     function printVideoRow($video, $question) {
 		echo '<tr>';
 		echo "<td>".htmlentities($video['video_id'])."</td>";
@@ -56,8 +74,8 @@
     
     function printOptionRow($option, $question) {
 		echo '<tr>';
-		echo "<td>".htmlentities($question[1][$option['video_from']-1]['video_text'])."</td>";
-		echo "<td>".htmlentities($question[1][$option['video_to']-1]['video_text'])."</td>";
+		echo "<td>".htmlentities(getVideoText($option["video_from"], $question[1]))."</td>";
+		echo "<td>".htmlentities(getVideoText($option["video_to"], $question[1]))."</td>";
 		echo "<td>".htmlentities($option['option_name'])."</td>";
 		echo "<td>".htmlentities($option['frequency'])."</td>";
 		echo "<td>";
@@ -116,7 +134,7 @@
                                                     foreach($question[2] as $option) {
                                                         echo "g.createVertex(".json_encode($option["option_name"]).", '#D3D6DA');\n";
                                                         echo "g.createEdge(".json_encode($question[1][$option["video_from"] - 1]['video_text']).", ".json_encode($option["option_name"]).");\n";
-                                                        echo "g.createEdge(".json_encode($option["option_name"]).", ".json_encode($question[1][$option["video_to"] - 1]['video_text']).");\n";
+                                                        echo "g.createEdge(".json_encode($option["option_name"]).", ".json_encode(getVideoText($option["video_to"], $question[1])).");\n";
                                                     }
                                                 ?>                              
                                                 g.go();
@@ -204,7 +222,7 @@
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <select class="form-control required" name="videoFrom" disabled="disabled">
-                                                            <option value="">Video To</option>
+                                                            <option value="">Video From</option>
                                                             <?php 
                                                                 foreach($question[1] as $row) {
                                                                     echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
