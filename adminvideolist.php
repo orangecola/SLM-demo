@@ -68,7 +68,7 @@
 		echo "<td>".htmlentities($video['video_link'])."</td>";
 		echo "<td>".htmlentities($video['video_text'])."</td>";
 		echo "<td>";
-        echo "<a href=\"statistics.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-default btn-xs\"><i class='fa fa-folder'></i> View</a>";
+        echo "<a class='btn btn-primary btn-xs' data-toggle='modal' data-target="."#video".htmlentities($video['video_id'])."view href="."#video".htmlentities($video['video_id'])."view><i class='fa fa-folder'></i> View </a>";
         echo "<a href=\"editvideo.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a>";
         if ($question[0]['video_start'] == $video['video_id']) {
             echo "Start";
@@ -79,6 +79,31 @@
         echo "</td>";
 		echo '</tr>';
     }
+    
+    function printVideoModal($video) {
+		#Modal for more information
+		echo "<div id='video".htmlentities($video['video_id'])."view' class='modal fade' role='dialog'>";
+		echo 	"<div class='modal-dialog'>";
+		echo 		"<div class='modal-content'>";
+		echo 			"<div class='modal-header'>";
+		echo 				"<button type='button' class='close' data-dismiss='modal'>&times;</button>";
+		echo 					"<h3 class='modal-title'>Video ".htmlentities($video['video_id'])." Information</h3>";
+		echo 			"</div>";
+		echo	 		"<div class='modal-body'>";
+		echo				"<div class='x_title'><h4>Video Preview</h4></div>";
+        echo                    "<div class='videoWrapper'>";
+        echo                        '<iframe id="ytplayer" type="text/html" class="col-xs-12" src="https://www.youtube.com/embed/'.htmlentities($video['video_link']).'?autoplay=0" frameborder="0"></iframe>';
+        echo                '</div>';
+        echo                '<div class="x_title"><h4>Options Selected Information</h4></div>';
+        echo                '<div id="video'.htmlentities($video['video_id']).'_chart"></div>';
+		echo 			"</div>";
+		echo 		"<div class='modal-footer'>";
+		echo			"<a href=\"editsoftware.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-info\"><i class='fa fa-edit'></i>Edit</a>";
+		echo 			"<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
+		echo		"</div>";
+		echo	"</div>";
+		echo "</div>";
+	}
     
     function printOptionRow($option, $question) {
 		echo '<tr>';
@@ -93,6 +118,37 @@
 		echo '</tr>';
     }
 ?>
+
+<!-- Chart Drawing -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      // Load Charts and the corechart package.
+      google.charts.load('current', {'packages':['corechart']});
+
+      <?php
+        foreach($question[1] as $video) {
+            echo 'google.charts.setOnLoadCallback(draw'.htmlentities($video['video_id']).'chart);';
+            echo "\n";
+        }
+        
+        foreach($question[1] as $video) {
+            echo 'function draw'.htmlentities($video['video_id']).'chart() {';
+            echo 'var data = new google.visualization.DataTable();';
+            echo 'data.addColumn("string", "Option");';
+            echo 'data.addColumn("number", "Frequency");';
+            foreach ($question[2] as $option) {
+                if ($option['video_from'] == $video['video_id']) {
+                    echo 'data.addRow(["'.htmlentities($option['option_name']).'",'.htmlentities($option['frequency']).']);';
+                }
+            }
+            echo 'var options = {title:""};';
+            echo 'var chart = new google.visualization.PieChart(document.getElementById("video'.htmlentities($video['video_id']).'_chart"));';
+            echo 'chart.draw(data, options)';
+            echo "}";
+        }
+      ?>
+    </script>
 <!-- page content -->
 
 <div class="right_col" role="main">
@@ -161,6 +217,7 @@
                                                     <?php 
                                                         foreach($question[1] as $video) {
                                                             printVideoRow($video, $question);
+                                                            printVideoModal($video);
                                                         }
                                                     ?>
                                                 </tbody>
