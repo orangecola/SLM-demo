@@ -14,7 +14,7 @@
 	}
 	
 	$result = $user->getUser($_GET['id']);
-	$result[1]['ca_User_Password'] = "";
+	$result[1]['User_Password'] = "";
 	
 	if (!$result[0]) {
 		header('Location: userlist.php');
@@ -22,16 +22,16 @@
 	
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		
-        if (trim($_POST['ca_User_Password']) != "") {
-            $candidate['ca_User_Password'] 	= password_hash(trim($_POST['ca_User_Password']), PASSWORD_DEFAULT);
+        if (trim($_POST['User_Password']) != "") {
+            $candidate['User_Password'] 	= password_hash(trim($_POST['User_Password']), PASSWORD_DEFAULT);
         }
         else {
-            $candidate['ca_User_Password'] = "";
+            $candidate['User_Password'] = "";
         }
         
-		$candidate['ca_User_Username'] 	= trim($_POST['ca_User_Username']);
-		$candidate['ca_User_Role'] 		= trim($_POST['ca_User_Role']);
-		$candidate['ca_User_Status']	= trim($_POST['ca_User_Status']);
+		$candidate['User_Username'] 	= trim($_POST['User_Username']);
+		$candidate['User_Role'] 		= trim($_POST['User_Role']);
+		$candidate['User_Status']	= trim($_POST['User_Status']);
 		$same = true;
         
 		foreach ($user->userFields as $value) {
@@ -47,7 +47,7 @@
 		if ($same) {
 			$noChanges = 1;
 		}
-		else if (!$user->check($candidate['ca_User_Username']) and $candidate['ca_User_Username'] != $result[1]['ca_User_Username']) {
+		else if (!$user->check($candidate['User_Username']) and $candidate['User_Username'] != $result[1]['User_Username']) {
 			$usernameTaken = 1;
 		}
 		else {
@@ -80,7 +80,7 @@
 	  <div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="x_panel">
 		  <div class="x_title">
-			<h2>Editing User <?php echo htmlentities($result[1]['ca_User_Username']);?></h2>
+			<h2>Editing User <?php echo htmlentities($result[1]['User_Username']);?></h2>
 			
 			<div class="clearfix"></div>
 		  </div>
@@ -102,33 +102,33 @@
 			<strong>Success</strong> User edited successfully
 		  </div>';}
 		  ?>
-			<br />
+			<p>Edit information about a user here. To keep the password the same, leave the password field blank.</p>
 			<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="post">
 
 			  <div class="item form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="username">Username <span class="required">*</span>
 				</label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input type="text" id="username" class="form-control col-md-7 col-xs-12 required"  name="ca_User_Username" data-validate-length-range="6">
+				  <input type="text" id="username" class="form-control col-md-7 col-xs-12 required"  name="User_Username" data-validate-length-range="6">
 				</div>
 			  </div>
 			  <div class="item form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12" for="password">Password <span class="required">*</span>
 				</label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input type="password" id="password" name="ca_User_Password" class="form-control col-md-7 col-xs-12 optional" placeholder="*unchanged*" >
+				  <input type="password" id="password" name="User_Password" class="form-control col-md-7 col-xs-12 optional" placeholder="*unchanged*" >
 				</div>
 			  </div>
 			  <div class="item form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Confirm Password <span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <input id="password2" class="form-control col-md-7 col-xs-12 optional" type="password" data-validate-linked="ca_User_Password">
+				  <input id="password2" class="form-control col-md-7 col-xs-12 optional" type="password" data-validate-linked="User_Password">
 				</div>
 			  </div>
 			  <div class="item form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">User Role<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <select class="form-control" name="ca_User_Role">
+				  <select class="form-control" name="User_Role">
 					<option id="user" value="user">User</option>
 					<option id="admin" value="admin">Admin</option>
 				  </select>
@@ -137,7 +137,7 @@
 			  <div class="item form-group">
 				<label class="control-label col-md-3 col-sm-3 col-xs-12">Status<span class="required">*</span></label>
 				<div class="col-md-6 col-sm-6 col-xs-12">
-				  <select class="form-control" name="ca_User_Status">
+				  <select class="form-control" name="User_Status">
 					<option id="active" value="active">Active</option>
 					<option id="inactive" value="inactive">Inactive</option>
 				  </select>
@@ -158,9 +158,9 @@
   </div>
 </div>
 <script>
-	document.getElementById("username").setAttribute("value", <?php echo json_encode($result[1]['ca_User_Username']);?>);
-	document.getElementById(<?php echo json_encode($result[1]['ca_User_Role']);?>).setAttribute("selected", "selected");
-	document.getElementById(<?php echo json_encode($result[1]['ca_User_Status']);?>).setAttribute("selected", "selected");
+	document.getElementById("username").setAttribute("value", <?php echo json_encode($result[1]['User_Username']);?>);
+	document.getElementById(<?php echo json_encode($result[1]['User_Role']);?>).setAttribute("selected", "selected");
+	document.getElementById(<?php echo json_encode($result[1]['User_Status']);?>).setAttribute("selected", "selected");
 </script>
 <!-- /page content -->
 

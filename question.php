@@ -47,7 +47,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <br />
+                        <p>Please watch the video and select the option that you think is appropriate in the siutation presented.</p>
                         <form novalidate id="demo-form2" enctype="multipart/form-data" class="form-horizontal form-label-left" method="post">
                             <div class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" >Video</label>

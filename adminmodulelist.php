@@ -29,6 +29,7 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
+                    <p>Select a module to edit questions</p>
                     <div class="row">
                     <?php if (count($modules) == 0): ?>
                         <div class="col-xs-12">

@@ -23,6 +23,7 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
+                    <p>Select a module to attempt questions. You should have gone through all other content for this week before attempting the questions here.</p>
                     <div class="row">                    
                     <?php foreach ($modules as $module) {?>
                       <a href="questionlist.php?id=<?php echo htmlentities($module['module_id'])?>">

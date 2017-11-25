@@ -28,6 +28,7 @@ document.getElementById('userlist.php').setAttribute("class", "current-page");
 			<div class="clearfix"></div>
 		  </div>
 		  <div class="x_content">
+            <p>Select a user to edit</p>
 			<table id="datatable" class="table table-striped table-bordered">
 			  <thead>
 				<tr>
@@ -41,10 +42,10 @@ document.getElementById('userlist.php').setAttribute("class", "current-page");
 				<?php 
 					foreach($result as $row) {
 						echo '<tr>';
-						echo "<td>".htmlentities($row['ca_User_Username'])	."</td>";
-						echo "<td>".htmlentities($row['ca_User_Role'])		."</td>";
-						echo "<td>".htmlentities($row['ca_User_Status'])	."</td>";
-						echo "<td><a href=\"edituser.php?id=".htmlentities($row['ca_user_ID'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a></td>";
+						echo "<td>".htmlentities($row['User_Username'])	."</td>";
+						echo "<td>".htmlentities($row['User_Role'])		."</td>";
+						echo "<td>".htmlentities($row['User_Status'])	."</td>";
+						echo "<td><a href=\"edituser.php?id=".htmlentities($row['User_ID'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a></td>";
 						echo '</tr>';
 					}
 				?>

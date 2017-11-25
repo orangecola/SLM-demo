@@ -143,7 +143,7 @@
         public function getUsers() {
             //Retrieves the user list
             //Returns an array of users
-            $stmt = $this->db->prepare("SELECT User_Username, User_Role, User_Status, user_ID FROM Users");
+            $stmt = $this->db->prepare("SELECT User_Username, User_Role, User_Status, User_ID FROM Users");
             $stmt->execute();
             return $stmt->fetchAll();
         }

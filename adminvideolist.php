@@ -104,7 +104,6 @@
         </div>
         
         <div class="clearfix"></div>
-        
         <div class="row">
             <div class="col-md-12">
                 <div class="x_panel">
@@ -118,6 +117,7 @@
                         <strong>Warning!</strong> No start point set!
                     </div>';} ?>
                     <div class="x_content">
+                    <p>Edit the options and videos here.</p>
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="" role="tabpanel" data-example-id="togglable-tabs">

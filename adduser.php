@@ -49,7 +49,6 @@
 		<div class="x_panel">
 		  <div class="x_title">
 			<h2>Add User</h2>
-			
 			<div class="clearfix"></div>
 		  </div>
 		  <div class="x_content">
@@ -65,7 +64,7 @@
 			<strong>Success</strong> User created successfully
 		  </div>';}
 		  ?>
-			<br />
+            <p>Add new Users for use with the system here.<p>
 			<form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left" method="post">
 
 			  <div class="item form-group">

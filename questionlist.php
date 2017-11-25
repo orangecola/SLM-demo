@@ -34,6 +34,7 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
+                  <p>Select a question to attempt</p>
                     <div class="row">
                     <?php foreach ($module[1] as $question) {?>
                       <a href="question.php?id=<?php echo htmlentities($question['video_start'])?>">
