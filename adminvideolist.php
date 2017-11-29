@@ -42,6 +42,17 @@
             }
         }
     }
+    else if (isset($_GET['deletevideo'])) {
+        foreach($question[1] as $video) {
+            if ($video['video_id'] == $_GET['deletevideo']) {
+                if ($question[0]['video_start'] == $_GET['deletevideo']) {
+                    $user->setStartingVideo($video['video_id'], NULL);
+                }
+                $user->deleteVideo($_GET['deletevideo']);
+                $question = $user->getQuestion($_GET['id']);
+            }
+        }
+    }
     require 'components/sidebar.php';
     
     //-----------------------------------------------------------
@@ -69,6 +80,7 @@
 		echo "<td>".htmlentities($video['video_text'])."</td>";
 		echo "<td>";
         echo "<a class='btn btn-primary btn-xs' data-toggle='modal' data-target="."#video".htmlentities($video['video_id'])."view href="."#video".htmlentities($video['video_id'])."view><i class='fa fa-folder'></i> View </a>";
+        echo "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deletevideo=".htmlentities($video['video_id'])."\" class=\"btn btn-danger btn-xs\"><i class='fa fa-delete'></i>Delete</a>";
         echo "<a href=\"editvideo.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a>";
         if ($question[0]['video_start'] == $video['video_id']) {
             echo "Start";
@@ -98,7 +110,8 @@
         echo                '<div id="video'.htmlentities($video['video_id']).'_chart"></div>';
 		echo 			"</div>";
 		echo 		"<div class='modal-footer'>";
-		echo			"<a href=\"editsoftware.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-info\"><i class='fa fa-edit'></i>Edit</a>";
+        echo        "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deletevideo=".htmlentities($video['video_id'])."\" class=\"btn btn-danger\"><i class='fa fa-delete'></i>Delete</a>";
+        echo        "<a href=\"editvideo.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-info\"><i class='fa fa-edit'></i>Edit</a>";
 		echo 			"<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
 		echo		"</div>";
 		echo	"</div>";
@@ -112,7 +125,7 @@
 		echo "<td>".htmlentities($option['option_name'])."</td>";
 		echo "<td>".htmlentities($option['frequency'])."</td>";
 		echo "<td>";
-        echo "<a href=\"placeholder.php?id=".htmlentities($option['option_id'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a>";
+        echo "<a href=\"editoption.php?id=".htmlentities($option['option_id'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a>";
         echo "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deleteoption=".htmlentities($option['option_id'])."\" class=\"btn btn-danger btn-xs\"><i class='fa fa-delete'></i>Delete</a>";
         echo "</td>";
 		echo '</tr>';

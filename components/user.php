@@ -238,11 +238,48 @@
             return $result;
         }
         
+        public function getOption($optionID) {
+            //Get the Options
+            //Return format
+            //Array: {true/false, array of user information}
+            //[0]: Result of retrieving. Option Row if successful, False if failed
+            //[1]: Array of Videos in Question
+            $result = array(false, false);
+            $stmt = $this->db->prepare("SELECT * from options WHERE option_id=:option_id");
+            $stmt->bindParam(':option_id', $optionID);
+            $stmt->execute();
+            if ($stmt->rowCount() == 1) {
+                $result[0] = $stmt->fetch();
+                $stmt = $this->db->prepare("SELECT * from videos WHERE question_id=:question_id");
+                $stmt->bindParam(':question_id', $result[0]['question_id']);
+                $stmt->execute();
+                $result[1] = $stmt->fetchAll();
+            }
+            return $result;
+        }
+        
         public function setStartingVideo($video_ID, $question_ID) {
             //Set the start video of a question
             $stmt = $this->db->prepare("UPDATE questions SET video_start=:video_id WHERE question_id=:question_id");
             $stmt->bindParam(':video_id', $video_ID);
             $stmt->bindParam(':question_id', $question_ID);
+            $stmt->execute();
+        }
+        
+        public function editVideo($video_ID, $videoLink, $videoName) {
+            $stmt = $this->db->prepare("UPDATE videos SET video_link=:video_link, video_text=:video_name WHERE video_id=:video_id");
+            $stmt->bindParam(':video_id', $video_ID);
+            $stmt->bindParam(':video_link', $videoLink);
+            $stmt->bindParam(':video_name', $videoName);
+            $stmt->execute();
+        }
+        
+        public function editOption($optionID, $videoFrom, $videoTo, $optionName) {
+            $stmt = $this->db->prepare("UPDATE options SET video_from=:video_from, video_to=:video_to, option_name=:option_name WHERE option_id=:option_id");
+            $stmt->bindParam(':option_id', $optionID);
+            $stmt->bindParam(':video_from', $videoFrom);
+            $stmt->bindParam(':video_to', $videoTo);
+            $stmt->bindParam(':option_name', $optionName);
             $stmt->execute();
         }
         
@@ -305,6 +342,18 @@
             $stmt->bindParam(':video_to', $videoTo);
             $stmt->bindParam(':option_name', $optionName);
             $stmt->bindParam(':question_id', $questionId);
+            $stmt->execute();
+        }
+        
+        public function deleteVideo($video_ID) {
+            $stmt = $this->db->prepare("DELETE FROM options WHERE video_from=:video_id");
+            $stmt->bindParam(':video_id', $video_ID);
+            $stmt->execute();
+            $stmt = $this->db->prepare("DELETE FROM options WHERE video_to=:video_id");
+            $stmt->bindParam(':video_id', $video_ID);
+            $stmt->execute();
+            $stmt = $this->db->prepare("DELETE FROM videos WHERE video_id=:video_id");
+            $stmt->bindParam(':video_id', $video_ID);
             $stmt->execute();
         }
         
