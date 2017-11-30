@@ -84,7 +84,6 @@
 								echo '<ul class="nav child_menu">';
                                 echo '<li id="adminmodulelist.php"><a href="adminmodulelist.php">Edit Questions</a></li>' ;
 								echo '<li id="adduser.php"><a href="adduser.php">Add User</a></li>' ; 
-								echo '<li id="bulkadduser.php"><a href="bulkadduser.php">Bulk Add Users</a></li>' ;
 								echo '<li id="userlist.php"><a href="userlist.php">Edit User</a></li>' ;
 								echo '<li id="logs.php"><a href="logs.php">Logs</a></li>';
 								echo '</ul>';
