@@ -46,7 +46,7 @@
         foreach($question[1] as $video) {
             if ($video['video_id'] == $_GET['deletevideo']) {
                 if ($question[0]['video_start'] == $_GET['deletevideo']) {
-                    $user->setStartingVideo($video['video_id'], NULL);
+                    $user->setStartingVideo(NULL, $video['video_id']);
                 }
                 $user->deleteVideo($_GET['deletevideo']);
                 $question = $user->getQuestion($_GET['id']);
