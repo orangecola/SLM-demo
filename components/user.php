@@ -192,6 +192,31 @@
             }
             return $result;
         }
+
+        // desc: For a question based on its question_ID, retrieve all the end video IDs for that question
+        // and returns an array of video IDs
+        // params: $question_ID (int)
+        // returns: $result (array of int)
+        public function getEndVideosForQuestion($question_ID){
+            $result = array(false);
+            $stmt = $this->db->prepare("SELECT video_id FROM questions_end WHERE question_id=:question_id");
+            $stmt->bindParam(':question_id', $question_ID);
+            $stmt->execute();
+
+            // if result are returned
+            if ($stmt->rowCount() > 0){
+                $dbResult = $stmt->fetchAll();
+
+                // remove false from array
+                array_pop($result);
+
+                // transform result form db into array of video IDs
+                foreach($dbResult as $video){
+                    array_push($result, $video["video_id"]);
+                }
+            }
+            return $result;
+        }
         
         public function getQuestion($question_ID) {
             //Get the details of a question with question_ID=$question_ID
@@ -206,6 +231,7 @@
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
                 $result[0] = $stmt->fetch();
+                $result[0]["videos_end"] = $this->getEndVideosForQuestion($question_ID);    // add end video IDs to question
                 $stmt = $this->db->prepare("SELECT * from videos where question_id=:question_id");
                 $stmt->bindParam(':question_id', $question_ID);
                 $stmt->execute();
@@ -258,6 +284,22 @@
             return $result;
         }
         
+        public function setEndingVideo($video_ID, $question_ID) {
+            //Set the end video of a question
+            $stmt = $this->db->prepare("INSERT INTO questions_end (`question_id`, `video_id`) VALUES (:question_id, :video_id)");
+            $stmt->bindParam(':video_id', $video_ID);
+            $stmt->bindParam(':question_id', $question_ID);
+            $stmt->execute();
+        }
+
+        public function removeEndingVideo($video_ID, $question_ID) {
+            // Remove the end video of a question
+            $stmt = $this->db->prepare("DELETE FROM questions_end WHERE video_id=:video_id and question_id=:question_id");
+            $stmt->bindParam(':video_id', $video_ID);
+            $stmt->bindParam(':question_id', $question_ID);
+            $stmt->execute();
+        }
+
         public function setStartingVideo($video_ID, $question_ID) {
             //Set the start video of a question
             $stmt = $this->db->prepare("UPDATE questions SET video_start=:video_id WHERE question_id=:question_id");

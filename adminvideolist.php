@@ -34,6 +34,22 @@
             }
         }
     }
+    else if (isset($_GET['assignEnd'])) {
+        foreach($question[1] as $video) {
+            if ($video['video_id'] == $_GET['assignEnd']) {
+                $user->setEndingVideo($video['video_id'], $question[0]['question_id']);
+                $question = $user->getQuestion($_GET['id']);
+            }
+        }
+    }
+    else if (isset($_GET['unassignEnd'])) {
+        foreach($question[1] as $video) {
+            if ($video['video_id'] == $_GET['unassignEnd']) {
+                $user->removeEndingVideo($video['video_id'], $question[0]['question_id']);
+                $question = $user->getQuestion($_GET['id']);
+            }
+        }
+    }
     else if (isset($_GET['deleteoption'])) {
         foreach($question[2] as $option) {
             if ($option['option_id'] == $_GET['deleteoption']) {
@@ -87,6 +103,14 @@
         }
         else {
             echo "<a href=\"adminvideolist.php?id=".htmlentities($question[0]['question_id'])."&start=".htmlentities($video['video_id'])."\" class=\"btn btn-primary btn-xs\"><i class='fa fa-location-arrow'></i> Make Start</a>";
+        }
+
+        // if video is assigned as end, show unassign end button for video. Else, show assign end button.
+        if (in_array($video['video_id'], $question[0]['videos_end'])) {
+            echo "<a href=\"adminvideolist.php?id=".htmlentities($question[0]['question_id'])."&unassignEnd=".htmlentities($video['video_id'])."\" class=\"btn btn-warning btn-xs\"><i class='fa fa-location-arrow'></i>Unassign End</a>";
+        }
+        else {
+            echo "<a href=\"adminvideolist.php?id=".htmlentities($question[0]['question_id'])."&assignEnd=".htmlentities($video['video_id'])."\" class=\"btn btn-success btn-xs\"><i class='fa fa-location-arrow'></i>Assign End</a>";
         }
         echo "</td>";
 		echo '</tr>';
