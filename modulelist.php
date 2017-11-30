@@ -9,7 +9,7 @@
           <div class="">
             <div class="page-title">
               <div class="title_left">
-                <h3> Attempt Question  </h3>
+                <h3> Welcome!  </h3>
               </div>
             </div>
 
@@ -23,7 +23,7 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <p>Select a module to attempt questions. You should have gone through all other content for this week before attempting the questions here.</p>
+                    <p>Select a module to attempt its questions. Do ensure that you are familiar with the content before attempting the questions.</p>
                     <div class="row">                    
                     <?php foreach ($modules as $module) {?>
                       <a href="questionlist.php?id=<?php echo htmlentities($module['module_id'])?>">

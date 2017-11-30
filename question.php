@@ -32,7 +32,7 @@
     <div class="">
         <div class="page-title">
             <div class="title_left">
-                <h3><?php echo htmlentities($question[0]['question_name']);?></h3>
+                <h3><?php echo htmlentities($question[0]['question_name']);?><img width="100" height="50" src="./images/hot_and_cold.jpg" alt="hot and cold">
             </div>
         </div>
         <div class="clearfix"></div>
@@ -43,11 +43,10 @@
                 <div class="x_panel">
                     <div class="x_title">
                         <h2><?php echo htmlentities($video[0]['video_text'])?></h2>
-                        
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <p>Please watch the video and select the option that you think is appropriate in the siutation presented.</p>
+                        <p>Please watch the video <b> FIRST </b>and select the option that you think is the best response for the situation presented.</p>
                         <form novalidate id="demo-form2" enctype="multipart/form-data" class="form-horizontal form-label-left" method="post">
                             <div class="item form-group">
                                 <label class="control-label col-md-3 col-sm-3 col-xs-12" >Video</label>
@@ -60,13 +59,17 @@
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                     <?php
-                                        foreach ($video[1] as $option) {
-                                            echo '<a href="question.php?id='.htmlentities($video[0]['video_id']).'&option='.htmlentities($option['option_id']).'" class="btn btn-success col-xs-12">'.htmlentities($option['option_name']).'</a>';
+                                        foreach ($video[1] as $index=>$option) {
+                                            echo '<a href="question.php?id='.htmlentities($video[0]['video_id']).'&option='.htmlentities($option['option_id']).'" class="btn btn-success col-xs-12"> Option '. ($index + 1) . ': ' .htmlentities($option['option_name']).'</a>';
                                             echo '<br />';
                                             echo '<br />';
                                         }
-                                    ?>
-                                    <a href="modulelist.php" class="btn btn-danger col-xs-12">Back to Module List</a>
+
+                                        // if video is the end video, show button to return to module list
+                                        if (in_array($video[0]['video_id'], $question[0]['videos_end'])){
+                                            echo '<a href="modulelist.php" class="btn btn-danger col-xs-12">Return to Module List</a>';
+                                        }
+                                    ?>               
                                 </div>
                             </div>
                         </div>
