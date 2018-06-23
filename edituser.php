@@ -1,41 +1,41 @@
-<?php 
+<?php
 	include_once('components/config.php');
 	$Success=0;
 	$noChanges=0;
 	$usernameTaken=0;
-	
+
 	if(!($_SESSION['role'] == 'admin'))
 	  {
 		 header('Location: logout.php');
 	  }
-	
+
 	if(!(isset($_GET['id']))) {
 			header('Location: userlist.php');
 	}
-	
+
 	$result = $user->getUser($_GET['id']);
 	$result[1]['User_Password'] = "";
-	
+
 	if (!$result[0]) {
 		header('Location: userlist.php');
 	}
-	
+	/*
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		
+
         if (trim($_POST['User_Password']) != "") {
             $candidate['User_Password'] 	= password_hash(trim($_POST['User_Password']), PASSWORD_DEFAULT);
         }
         else {
             $candidate['User_Password'] = "";
         }
-        
+
 		$candidate['User_Username'] 	= trim($_POST['User_Username']);
 		$candidate['User_Role'] 		= trim($_POST['User_Role']);
 		$candidate['User_Status']	= trim($_POST['User_Status']);
 		$same = true;
-        
+
 		foreach ($user->userFields as $value) {
-        
+
         	echo ($candidate[$value] != $result[1][$value]);
 			if ($candidate[$value] != $result[1][$value]) {
 				$same = false;
@@ -43,7 +43,7 @@
 			}
 		}
 		unset($value);
-		
+
 		if ($same) {
 			$noChanges = 1;
 		}
@@ -54,11 +54,11 @@
 			$user->editUser($result[1], $candidate);
 			$result = $user->getUser($_GET['id']);
 			$result['password'] = "";
-			
+
 			$Success = 1;
 		}
 	}
-  
+  */
 	include('components/sidebar.php');
 ?>
 
@@ -75,13 +75,13 @@
 	</div>
 	<div class="clearfix"></div>
 	<div class="row">
-		
+
 
 	  <div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="x_panel">
 		  <div class="x_title">
 			<h2>Editing User <?php echo htmlentities($result[1]['User_Username']);?></h2>
-			
+
 			<div class="clearfix"></div>
 		  </div>
 		  <div class="x_content">

@@ -1,4 +1,4 @@
-<?php 
+<?php
 	include_once('components/config.php');
 	$Success=0;
 	if (isset($_GET['id'])) {
@@ -21,11 +21,11 @@
         header("Location: modulelist.php");
     }
 	include('components/sidebar.php');
-?>  
+?>
 
 <script>
 	document.getElementById('questionlist.php').setAttribute("class", "current-page");
-	
+
 </script>
 <!-- page content -->
 <div class="right_col" role="main">
@@ -37,8 +37,8 @@
         </div>
         <div class="clearfix"></div>
         <div class="row">
-            
-            
+
+
             <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                     <div class="x_title">
@@ -55,7 +55,7 @@
                                         <iframe id="ytplayer" type="text/html" class="col-xs-12" src="https://www.youtube.com/embed/<?php echo htmlentities($video[0]['video_link']);?>?autoplay=0" frameborder="0"></iframe>
                                     </div>
                                 </div>
-                            </div>	
+                            </div>
                             <div class="item form-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
                                     <?php
@@ -67,9 +67,9 @@
 
                                         // if video is the end video, show button to return to module list
                                         if (in_array($video[0]['video_id'], $question[0]['videos_end'])){
-                                            echo '<a href="modulelist.php" class="btn btn-danger col-xs-12">Return to Module List</a>';
+                                            echo '<a href="index.php" class="btn btn-danger col-xs-12">Return to Front Page</a>';
                                         }
-                                    ?>               
+                                    ?>
                                 </div>
                             </div>
                         </div>

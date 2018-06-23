@@ -1,7 +1,7 @@
 <!-- footer content -->
 	<footer>
 	  <div class="pull-right">
-		Group 6 ICT3001 Self Learning Module AY2017/2018
+		Elysium Labs ISPRM 2018 Demo
 	  </div>
 	  <div class="clearfix"></div>
 	</footer>

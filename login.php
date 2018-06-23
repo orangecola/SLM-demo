@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>AMS Login</title>
+    <title>ISPRM2018 Elysium Labs</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,23 +19,23 @@
     <!-- Custom Theme Style -->
     <link href="./build/css/custom.min.css" rel="stylesheet">
   </head>
-<?php 
+<?php
 	include_once('components/config.php');
 	//Redirect user to dashboard if logged in
 	if (isset($_SESSION['user_ID'])) {
 		header('Location: modulelist.php');
 	}
 	$Login_Failed=0;
-	
+
 	//Handle login
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		
-		
+
+
 		$username = trim($_POST['username']);
 		$password = trim($_POST['password']);
-		
+
 		$result = $user->login($username, $password);
-		
+
 		if ($result) {
 			header("Location: modulelist.php");
 		}
@@ -53,7 +53,7 @@
         <div class="login_form">
           <section class="login_content">
             <form method="post">
-              <h1>YASD</h1>
+              <h1>Elysium Labs</h1>
               <div>
                 <input type="text" class="form-control" name="username" placeholder="Username"/>
               </div>

@@ -1,21 +1,21 @@
-<?php 
-	
+<?php
     if(!isset($_SESSION['user_ID']))
 	  {
-		 header('Location: logout.php');
+	     header('Location: index.php');
 	  }
-      
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
+    <link rel="shortcut icon" type="image/x-icon" href="images/logo.png" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	  
-    <title>You are so done!!!</title>
+
+    <title>ISPRM 2018 Elysium Labs</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -66,7 +66,7 @@
 		<div class="col-md-3 left_col">
 			  <div class="left_col scroll-view">
 				<div class="navbar nav_title" style="border: 0;">
-				  <span class="site_title">Self Learning Module</span>
+				  <span class="site_title">ISPRM2018 Demo</span>
 				</div>
 
 				<div class="clearfix"></div>
@@ -77,21 +77,10 @@
 				<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 				  <div class="menu_section">
 					<ul class="nav side-menu">
-					  <li id="modulelist.php"><a href="modulelist.php"><i class="fa fa-home"></i>Attempt Questions</a></li>
-                      <li id="changepassword.php"><a href="changepassword.php"><i class="fa fa-user"></i>Change Password</a></li>
-                      <?php if ($_SESSION['role'] == 'admin') { 
-								echo '<li><a><i class="fa fa-gears"></i> Admin Panel <span class="fa fa-chevron-down"></span></a>';
-								echo '<ul class="nav child_menu">';
-                                echo '<li id="adminmodulelist.php"><a href="adminmodulelist.php">Edit Questions</a></li>' ;
-								echo '<li id="adduser.php"><a href="adduser.php">Add User</a></li>' ; 
-								echo '<li id="userlist.php"><a href="userlist.php">Edit User</a></li>' ;
-								echo '<li id="logs.php"><a href="logs.php">Logs</a></li>';
-								echo '</ul>';
-								echo '</li>';
-                      }?>
-					</ul>   
+					  <li id="logout.php"><a href="logout.php"><i class="fa fa-home"></i>Return to Front Page</a></li>
+					</ul>
 				  </div>
-				  
+
 
 				</div>
 				<!-- /sidebar menu -->
@@ -114,11 +103,11 @@
 						<span class=" fa fa-angle-down"></span>
 					  </a>
 					  <ul class="dropdown-menu dropdown-usermenu pull-right">
-						<li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+						<li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i>Return to Front Page</a></li>
 					  </ul>
 					</li>
 
-					
+
 				  </ul>
 				</nav>
 			  </div>

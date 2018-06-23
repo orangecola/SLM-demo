@@ -1,37 +1,37 @@
-<?php 
+<?php
 	include_once('components/config.php');
 	$Success=0;
 	$noChanges=0;
 	$usernameTaken=0;
-	
+
 	if(!($_SESSION['role'] == 'admin'))
 	  {
 		 header('Location: logout.php');
 	  }
-	
+
 	if(!(isset($_GET['id']))) {
 			header('Location: userlist.php');
 	}
-	
+
 	$result = $user->getVideo($_GET['id'])[0];
 
 	if (!$result[0]) {
 		header('Location: userlist.php');
 	}
-	
+	/*
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		
+
 		$candidate['id'] 	        = trim($_GET['id']);
 		$candidate['videoid'] 		= trim($_POST['videoid']);
 		$candidate['videoname']	    = trim($_POST['videoname']);
 		$same = true;
-        
+
         $user->editVideo($candidate['id'], $candidate['videoid'], $candidate['videoname']);
         $result = $user->getVideo($_GET['id'])[0];
         $Success = 1;
 		}
-	
-  
+	*/
+
 	include('components/sidebar.php');
 ?>
 
@@ -45,13 +45,13 @@
 	</div>
 	<div class="clearfix"></div>
 	<div class="row">
-		
+
 
 	  <div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="x_panel">
 		  <div class="x_title">
 			<h2>Editing Video <?php echo htmlentities($result['video_id']);?></h2>
-			
+
 			<div class="clearfix"></div>
 		  </div>
 		  <div class="x_content">
@@ -71,13 +71,13 @@
                             <iframe id="ytplayer" type="text/html" class="col-xs-12" src="https://www.youtube.com/embed/<?php echo htmlentities($result['video_link']);?>?autoplay=0" frameborder="0"></iframe>
                         </div>
                     </div>
-                </div>	
+                </div>
                 <div class="item form-group">
                     <label class="control-label col-md-3 col-sm-3 col-xs-12">Instructions
                     </label>
                     <div class="col-md-6 col-sm-6 col-xs-12">
                         Upload your video to youtube, and then copy and paste the video id, which is after the v (without the v=), below:
-                        <img src="images/videoinstruction.jpg"> 
+                        <img src="images/videoinstruction.jpg">
                     </div>
                 </div>
                 <div class="item form-group">

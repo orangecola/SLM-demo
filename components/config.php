@@ -2,10 +2,11 @@
 
 session_start();
 
-$DB_HOST = '127.0.0.1';
-$DB_USER = 'root';
-$DB_PASS = '';
-$DB_NAME = 'slm';
+$DB_HOST = $_SERVER['RDS_HOSTNAME'];
+$DB_USER = $_SERVER['RDS_USERNAME'];
+$DB_PASS = $_SERVER['PASSWORD'];
+$DB_NAME = $_SERVER['RDS_DB_NAME'];
+$charset = 'utf8' ;
 
 try
 {

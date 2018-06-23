@@ -11,7 +11,7 @@
         redirect:
         header("Location: modulelist.php");
     };
-    
+    /*
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['video'])) {
             if ($_POST['videoid'] != "" and $_POST['videoname'] != "") {
@@ -22,7 +22,7 @@
         else if (isset($_POST['option'])) {
             if ($_POST['videoFrom'] != "" and $_POST['videoTo'] != "" and $_POST['optiontext'] != "") {
                 $user->addOption($_POST['videoFrom'], $_POST['videoTo'], $_POST['optiontext'], $question[0]['question_id']);
-                $question = $user->getQuestion($_GET['id']); 
+                $question = $user->getQuestion($_GET['id']);
             }
         }
     }
@@ -69,15 +69,16 @@
             }
         }
     }
+    */
     require 'components/sidebar.php';
-    
+
     //-----------------------------------------------------------
     // desc: retrieve the video name based on the ID
     // params: $option (object), $videoList (list of objects)
     // returns: $videoName (string)
     //-----------------------------------------------------------
     function getVideoText($videoID, $videoList){
-        
+
         // iterate through videos to find specific video based on id and retrieve video name
         $videoName = "";
         foreach ($videoList as $video){
@@ -85,10 +86,10 @@
                 $videoName = $video["video_text"];
             }
         }
-        
+
         return $videoName;
     }
-    
+
     function printVideoRow($video, $question) {
 		echo '<tr>';
 		echo "<td>".htmlentities($video['video_id'])."</td>";
@@ -96,10 +97,10 @@
 		echo "<td>".htmlentities($video['video_text'])."</td>";
 		echo "<td>";
         echo "<a class='btn btn-primary btn-xs' data-toggle='modal' data-target="."#video".htmlentities($video['video_id'])."view href="."#video".htmlentities($video['video_id'])."view><i class='fa fa-folder'></i> View </a>";
-        echo "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deletevideo=".htmlentities($video['video_id'])."\" class=\"btn btn-danger btn-xs\"><i class='fa fa-delete'></i>Delete</a>";
+        echo "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deletevideo=".htmlentities($video['video_id'])."\" class=\"btn btn-danger btn-xs\"><i class='fa fa-trash'></i>Delete</a>";
         echo "<a href=\"editvideo.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a>";
         if ($question[0]['video_start'] == $video['video_id']) {
-            echo "Start";
+            echo "<a class=\"btn btn-default btn-xs\"><i class='fa fa-location-arrow'></i>Start</a>";
         }
         else {
             echo "<a href=\"adminvideolist.php?id=".htmlentities($question[0]['question_id'])."&start=".htmlentities($video['video_id'])."\" class=\"btn btn-primary btn-xs\"><i class='fa fa-location-arrow'></i> Make Start</a>";
@@ -115,7 +116,7 @@
         echo "</td>";
 		echo '</tr>';
     }
-    
+
     function printVideoModal($video) {
 		#Modal for more information
 		echo "<div id='video".htmlentities($video['video_id'])."view' class='modal fade' role='dialog'>";
@@ -131,17 +132,17 @@
         echo                        '<iframe id="ytplayer" type="text/html" class="col-xs-12" src="https://www.youtube.com/embed/'.htmlentities($video['video_link']).'?autoplay=0" frameborder="0"></iframe>';
         echo                '</div>';
         echo                '<div class="x_title"><h4>Options Selected Information</h4></div>';
-        echo                '<div id="video'.htmlentities($video['video_id']).'_chart"></div>';
+        echo                '<canvas id="video'.htmlentities($video['video_id']).'_chart"></canvas>';
 		echo 			"</div>";
 		echo 		"<div class='modal-footer'>";
-        echo        "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deletevideo=".htmlentities($video['video_id'])."\" class=\"btn btn-danger\"><i class='fa fa-delete'></i>Delete</a>";
+        echo        "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deletevideo=".htmlentities($video['video_id'])."\" class=\"btn btn-danger\"><i class='fa fa-trash'></i>Delete</a>";
         echo        "<a href=\"editvideo.php?id=".htmlentities($video['video_id'])."\" class=\"btn btn-info\"><i class='fa fa-edit'></i>Edit</a>";
 		echo 			"<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
 		echo		"</div>";
 		echo	"</div>";
 		echo "</div>";
 	}
-    
+
     function printOptionRow($option, $question) {
 		echo '<tr>';
 		echo "<td>".htmlentities(getVideoText($option["video_from"], $question[1]))."</td>";
@@ -150,42 +151,12 @@
 		echo "<td>".htmlentities($option['frequency'])."</td>";
 		echo "<td>";
         echo "<a href=\"editoption.php?id=".htmlentities($option['option_id'])."\" class=\"btn btn-info btn-xs\"><i class='fa fa-edit'></i>Edit</a>";
-        echo "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deleteoption=".htmlentities($option['option_id'])."\" class=\"btn btn-danger btn-xs\"><i class='fa fa-delete'></i>Delete</a>";
+        echo "<a href=\"adminvideolist.php?id=".htmlentities($_GET['id'])."&deleteoption=".htmlentities($option['option_id'])."\" class=\"btn btn-danger btn-xs\"><i class='fa fa-trash'></i></i>Delete</a>";
         echo "</td>";
 		echo '</tr>';
     }
 ?>
 
-<!-- Chart Drawing -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-
-      // Load Charts and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
-
-      <?php
-        foreach($question[1] as $video) {
-            echo 'google.charts.setOnLoadCallback(draw'.htmlentities($video['video_id']).'chart);';
-            echo "\n";
-        }
-        
-        foreach($question[1] as $video) {
-            echo 'function draw'.htmlentities($video['video_id']).'chart() {';
-            echo 'var data = new google.visualization.DataTable();';
-            echo 'data.addColumn("string", "Option");';
-            echo 'data.addColumn("number", "Frequency");';
-            foreach ($question[2] as $option) {
-                if ($option['video_from'] == $video['video_id']) {
-                    echo 'data.addRow(["'.htmlentities($option['option_name']).'",'.htmlentities($option['frequency']).']);';
-                }
-            }
-            echo 'var options = {title:""};';
-            echo 'var chart = new google.visualization.PieChart(document.getElementById("video'.htmlentities($video['video_id']).'_chart"));';
-            echo 'chart.draw(data, options)';
-            echo "}";
-        }
-      ?>
-    </script>
 <!-- page content -->
 
 <div class="right_col" role="main">
@@ -195,7 +166,7 @@
                 <h3> Admin Panel  </h3>
             </div>
         </div>
-        
+
         <div class="clearfix"></div>
         <div class="row">
             <div class="col-md-12">
@@ -218,7 +189,7 @@
                                         <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Diagram View</a></li>
                                         <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false" onclick="video()">Video List</a></li>
                                         <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false" onclick="option()">Option List</a></li>
-                                        
+
                                     </ul>
                                     <div id="myTabContent" class="tab-content">
                                         <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
@@ -226,7 +197,7 @@
                                                 <div class="mermaid" style="width:2000px;">
                                                     graph TD
                                                     start[Start]
-                                                    <?php 
+                                                    <?php
                                                         foreach($question[1] as $video) {
                                                             echo htmlentities($video['video_id']) . '[' . htmlentities($video['video_text']) . "]\n";
                                                             if ($question[0]['video_start'] == $video['video_id']) {
@@ -251,7 +222,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php 
+                                                    <?php
                                                         foreach($question[1] as $video) {
                                                             printVideoRow($video, $question);
                                                             printVideoModal($video);
@@ -269,7 +240,7 @@
                                                     </label>
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         Upload your video to youtube, and then copy and paste the video id, which is after the v (without the v=), below:
-                                                        <img src="images/videoinstruction.jpg"> 
+                                                        <img src="images/videoinstruction.jpg">
                                                     </div>
                                                 </div>
                                                 <div class="item form-group">
@@ -306,7 +277,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <?php 
+                                                    <?php
                                                         foreach($question[2] as $option) {
                                                             printOptionRow($option, $question);
                                                         }
@@ -324,7 +295,7 @@
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <select class="form-control required" name="videoFrom" disabled="disabled">
                                                             <option value="">Video From</option>
-                                                            <?php 
+                                                            <?php
                                                                 foreach($question[1] as $row) {
                                                                     echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
                                                                 }
@@ -338,7 +309,7 @@
                                                     <div class="col-md-6 col-sm-6 col-xs-12">
                                                         <select class="form-control required" name="videoTo">
                                                             <option value="">Video To</option>
-                                                            <?php 
+                                                            <?php
                                                                 foreach($question[1] as $row) {
                                                                     echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
                                                                 }
@@ -378,7 +349,7 @@
         document.getElementsByName("videoTo")[0].setAttribute("disabled", "disabled");
         document.getElementsByName("optiontext")[0].setAttribute("disabled", "disabled");
         document.getElementsByName("option")[0].setAttribute("disabled", "disabled");
-        
+
         document.getElementsByName("video")[0].removeAttribute("disabled");
         document.getElementsByName("videoid")[0].removeAttribute("disabled");
         document.getElementsByName("videoname")[0].removeAttribute("disabled");
@@ -387,17 +358,53 @@
         document.getElementsByName("video")[0].setAttribute("disabled", "disabled");
         document.getElementsByName("videoid")[0].setAttribute("disabled", "disabled");
         document.getElementsByName("videoname")[0].setAttribute("disabled", "disabled");
-        
+
         document.getElementsByName("videoFrom")[0].removeAttribute("disabled");
         document.getElementsByName("videoTo")[0].removeAttribute("disabled");
         document.getElementsByName("optiontext")[0].removeAttribute("disabled");
         document.getElementsByName("option")[0].removeAttribute("disabled");
     };
 </script>
+<!-- Question Map Drawing -->
 <script type="text/javascript" src="build/js/mermaid.min.js"></script>
 <script>mermaid.initialize({startOnLoad:true});</script>
+<!-- Pie Chart Drawing -->
+<script type="text/javascript" src="vendors/Chart.js/dist/Chart.js"></script>
+<script type="text/javascript">
+
+  <?php
+    echo "console.log(document.getElementById('video4_chart'));";
+    foreach($question[1] as $video) {
+      echo "new Chart(document.getElementById('video".htmlentities($video['video_id'])."_chart'), {";
+      echo "type: 'pie',";
+      echo "data: {";
+      echo "  labels: ";
+      $namesArray = [];
+      foreach ($question[2] as $option) {
+        if ($option['video_from'] == $video['video_id']) {
+            array_push($namesArray, htmlentities($option['option_name']));
+        }
+      }
+      echo json_encode($namesArray).",";
+      echo "  datasets: [{";
+      echo '"backgroundColor":["rgb(255, 99, 132)","rgb(54, 162, 235)","rgb(255, 205, 86)"],';
+      echo "    data: ";
+      $namesArray = [];
+      foreach ($question[2] as $option) {
+        if ($option['video_from'] == $video['video_id']) {
+            array_push($namesArray, (int)$option['frequency']);
+        }
+      }
+      echo json_encode($namesArray);
+      echo "}]";
+      echo "}});\n";
+    }
+  ?>
+</script>
+
+
 <?php
     include 'components/footer.php';
     include 'components/datatables.php';
     include 'components/closing.php';
-?>    
+?>

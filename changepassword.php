@@ -1,11 +1,12 @@
-<?php 
+<?php
 	include('components/config.php');
 	$wrongPassword = 0;
 	$Success = 0;
+	/*
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$oldpassword = $_POST['oldpassword'];
 		$newpassword = $_POST['newpassword'];
-		
+
 		if ($user->checkPassword($oldpassword)) {
 			$user->changePassword($newpassword);
 			$Success = 1;
@@ -13,8 +14,9 @@
 			$wrongPassword = 1;
 		}
 	}
+	*/
 	include('components/sidebar.php')
-?>  
+?>
 
 <!-- page content -->
 <div class="right_col" role="main">
@@ -37,8 +39,8 @@
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
 			</button>
 			<strong>Error</strong> Old password is incorrect
-		  </div>';} 
-		  
+		  </div>';}
+
 		  if ($Success == 1) {echo '<div class="alert alert-success alert-dismissible fade in" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
 			</button>
@@ -83,7 +85,7 @@
   </div>
 </div>
 <!-- /page content -->
-<?php 
+<?php
 	include 'components/footer.php';
 	include 'components/closing.php';
 	?>

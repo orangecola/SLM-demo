@@ -1,38 +1,38 @@
-<?php 
+<?php
 	include_once('components/config.php');
 	$Success=0;
 	$noChanges=0;
 	$usernameTaken=0;
-	
+
 	if(!($_SESSION['role'] == 'admin'))
 	  {
 		 header('Location: logout.php');
 	  }
-	
+
 	if(!(isset($_GET['id']))) {
 			header('Location: userlist.php');
 	}
-	
+
 	$result = $user->getOption($_GET['id']);
-    
+
 	if (!$result[0]) {
 		header('Location: userlist.php');
 	}
-    
+  /*
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		
+
         $candidate['id'] 	        = trim($_GET['id']);
 		$candidate['videoFrom']     = trim($_POST['videoFrom']);
 		$candidate['videoTo'] 		= trim($_POST['videoTo']);
 		$candidate['optiontext']	= trim($_POST['optiontext']);
 		$same = true;
-        
+
         $user->editOption($candidate['id'], $candidate['videoFrom'], $candidate['videoTo'], $candidate['optiontext']);
         $result = $user->getOption($_GET['id']);
         $Success = 1;
 		}
-	
-  
+	*/
+
 	include('components/sidebar.php');
 ?>
 
@@ -46,13 +46,13 @@
 	</div>
 	<div class="clearfix"></div>
 	<div class="row">
-		
+
 
 	  <div class="col-md-12 col-sm-12 col-xs-12">
 		<div class="x_panel">
 		  <div class="x_title">
 			<h2>Editing Option <?php echo htmlentities($result[0]['option_id']);?></h2>
-			
+
 			<div class="clearfix"></div>
 		  </div>
 		  <div class="x_content">
@@ -71,7 +71,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control required" name="videoFrom">
                                 <option value="">Video From</option>
-                                <?php 
+                                <?php
                                     foreach($result[1] as $row) {
                                         echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
                                     }
@@ -85,7 +85,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <select class="form-control required" name="videoTo">
                                 <option value="">Video To</option>
-                                <?php 
+                                <?php
                                     foreach($result[1] as $row) {
                                         echo '<option value="'.$row['video_id'].'">'.$row['video_text'].'</option>';
                                     }
