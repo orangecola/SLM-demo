@@ -67,7 +67,7 @@
 
                                         // if video is the end video, show button to return to module list
                                         if (in_array($video[0]['video_id'], $question[0]['videos_end'])){
-                                            echo '<a href="index.php" class="btn btn-danger col-xs-12">Return to Front Page</a>';
+                                            echo '<a href="index.html" class="btn btn-danger col-xs-12">Return to Front Page</a>';
                                         }
                                     ?>
                                 </div>
